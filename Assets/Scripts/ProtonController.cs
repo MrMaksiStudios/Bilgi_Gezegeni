@@ -7,6 +7,8 @@ public class ProtonController : MonoBehaviour
     public float acceleration = 10f;
     public float airControl = 0.5f;
 
+    public MobileDpadInput mobileInput;
+
     [Header("Jump")]
     public float jumpForce = 6f;
     public float extraGravity = 20f;
@@ -71,8 +73,14 @@ public class ProtonController : MonoBehaviour
 
     void Move()
     {
-        float h = Input.GetKey(KeyCode.A) ? -1 : Input.GetKey(KeyCode.D) ? 1 : 0;
-        float v = Input.GetKey(KeyCode.S) ? -1 : Input.GetKey(KeyCode.W) ? 1 : 0;
+        float hKeyboard = Input.GetAxis("Horizontal");
+        float vKeyboard = Input.GetAxis("Vertical");
+
+        float hMobile = mobileInput != null ? mobileInput.InputVector.x : 0;
+        float vMobile = mobileInput != null ? mobileInput.InputVector.y : 0;
+
+        float h = Mathf.Abs(hMobile) > 0 ? hMobile : hKeyboard;
+        float v = Mathf.Abs(vMobile) > 0 ? vMobile : vKeyboard;
 
         Vector3 camForward = cameraTransform.forward;
         Vector3 camRight = cameraTransform.right;
@@ -80,7 +88,11 @@ public class ProtonController : MonoBehaviour
         camForward.y = 0;
         camRight.y = 0;
 
+        camForward.Normalize();
+        camRight.Normalize();
+
         Vector3 moveDir = (camForward * v + camRight * h).normalized;
+
         float control = isGrounded ? 1f : airControl;
 
         Vector3 targetVelocity = moveDir * moveSpeed * control;
