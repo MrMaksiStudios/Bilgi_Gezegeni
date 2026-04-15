@@ -45,6 +45,7 @@ public class ProtonController : MonoBehaviour
     {
         HandleCoyoteTime();
         HandleJump();
+
         dashTimer -= Time.deltaTime;
 
         if (Input.GetKeyDown(KeyCode.LeftShift) && dashTimer <= 0f)
@@ -58,10 +59,13 @@ public class ProtonController : MonoBehaviour
     {
         Move();
         ApplyExtraGravity();
+
         if (isGrounded && rb.velocity.magnitude > 1f)
         {
             if (!audioSource.isPlaying)
+            {
                 audioSource.PlayOneShot(moveSound);
+            }
         }
     }
 
@@ -77,7 +81,6 @@ public class ProtonController : MonoBehaviour
         camRight.y = 0;
 
         Vector3 moveDir = (camForward * v + camRight * h).normalized;
-
         float control = isGrounded ? 1f : airControl;
 
         Vector3 targetVelocity = moveDir * moveSpeed * control;
@@ -94,14 +97,12 @@ public class ProtonController : MonoBehaviour
     void Dash()
     {
         Vector3 dashDirection = transform.forward;
-
         rb.AddForce(dashDirection * dashForce, ForceMode.Impulse);
 
         PlayRandomPitchSound(DashSound);
 
         TrailRenderer tr = GetComponent<TrailRenderer>();
         tr.time = 0.8f;
-
         Invoke("ResetTrail", 0.2f);
     }
 
@@ -139,20 +140,28 @@ public class ProtonController : MonoBehaviour
     void HandleCoyoteTime()
     {
         if (isGrounded)
+        {
             coyoteCounter = coyoteTime;
+        }
         else
+        {
             coyoteCounter -= Time.deltaTime;
+        }
     }
 
     void OnCollisionStay(Collision collision)
     {
         if (collision.gameObject.CompareTag("Ground"))
+        {
             isGrounded = true;
+        }
     }
 
     void OnCollisionExit(Collision collision)
     {
         if (collision.gameObject.CompareTag("Ground"))
+        {
             isGrounded = false;
+        }
     }
 }
