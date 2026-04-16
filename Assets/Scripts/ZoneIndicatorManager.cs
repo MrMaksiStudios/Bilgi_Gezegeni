@@ -21,14 +21,20 @@ public class ZoneIndicatorManager : MonoBehaviour
     public AudioClip popupSFX;
 
     private Coroutine currentRoutine;
+    public Transform player;
 
     void Start()
     {
-        // Register triggers automatically
-        foreach (var zone in zones)
+
+        for (int i = 0; i < zones.Count; i++)
         {
+            var zone = zones[i];
+
             ZoneTrigger trigger = zone.triggerZone.gameObject.AddComponent<ZoneTrigger>();
-            trigger.Init(this, zone.zoneText);
+            trigger.Init(this, zone.zoneText, i); // ✅ PASS INDEX HERE
+
+            if (zone.mapIcon != null)
+                zone.mapIcon.SetActive(false);
         }
 
         popupGroup.alpha = 0;
@@ -41,6 +47,23 @@ public class ZoneIndicatorManager : MonoBehaviour
             StopCoroutine(currentRoutine);
 
         currentRoutine = StartCoroutine(ShowRoutine(text));
+    }
+
+    public void DiscoverZone(int index)
+    {
+        ZoneInfo zone = zones[index];
+
+        // ALWAYS show popup
+        ShowZone(zone.zoneText);
+
+        // ONLY unlock once
+        if (zone.discovered) return;
+
+        zone.discovered = true;
+
+        // Activate map icon
+        if (zone.mapIcon != null)
+            zone.mapIcon.SetActive(true);
     }
 
     IEnumerator ShowRoutine(string text)

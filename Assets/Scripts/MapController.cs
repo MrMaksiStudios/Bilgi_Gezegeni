@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class MapController : MonoBehaviour
 {
@@ -14,9 +16,11 @@ public class MapController : MonoBehaviour
 
     void Update()
     {
-        // ONLY used for closing
         if (state == MapState.Expanded && Input.GetMouseButtonDown(0))
         {
+            if (EventSystem.current.IsPointerOverGameObject())
+                return;
+
             SetMinimap();
         }
     }
