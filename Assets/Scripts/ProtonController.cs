@@ -46,7 +46,6 @@ public class ProtonController : MonoBehaviour
     void Update()
     {
         HandleCoyoteTime();
-        HandleJump();
 
         dashTimer -= Time.deltaTime;
 
@@ -54,6 +53,11 @@ public class ProtonController : MonoBehaviour
         {
             Dash();
             dashTimer = dashCooldown;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space) && coyoteCounter > 0f)
+        {
+            HandleJump();
         }
     }
 
@@ -106,7 +110,7 @@ public class ProtonController : MonoBehaviour
         }
     }
 
-    void Dash()
+    public void Dash()
     {
         Vector3 dashDirection = transform.forward;
         rb.AddForce(dashDirection * dashForce, ForceMode.Impulse);
@@ -129,16 +133,15 @@ public class ProtonController : MonoBehaviour
         audioSource.PlayOneShot(clip);
     }
 
-    void HandleJump()
+    public void HandleJump()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && coyoteCounter > 0f)
-        {
-            rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
-            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-            coyoteCounter = 0f;
+        
+        rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y , rb.velocity.z);
+        rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        coyoteCounter = 0f;
 
-            audioSource.PlayOneShot(jumpSound);
-        }
+        audioSource.PlayOneShot(jumpSound);
+        
     }
 
     void ApplyExtraGravity()
