@@ -426,8 +426,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -4.1499996, y: -14.95}
-  m_SizeDelta: {x: 33.7, y: 20.88}
+  m_AnchoredPosition: {x: -3.5, y: -29.315}
+  m_SizeDelta: {x: 110.17, y: 58.63}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &230175843
 MonoBehaviour:
@@ -472,7 +472,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 230175844}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1110226151}
+        m_TargetAssemblyTypeName: SceneLoader, Assembly-CSharp
+        m_MethodName: LoadChemScene
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &230175844
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2200,8 +2212,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 89.740005, y: 65.630005}
-  m_SizeDelta: {x: 33.7, y: 20.88}
+  m_AnchoredPosition: {x: 258.58, y: 139.64}
+  m_SizeDelta: {x: 109.01, y: 51.16}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1247701026
 MonoBehaviour:
@@ -2321,8 +2333,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 220.92, y: -99.94}
-  m_SizeDelta: {x: 33.7, y: 20.88}
+  m_AnchoredPosition: {x: 645, y: -226}
+  m_SizeDelta: {x: 136.47, y: 57.36}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1365172005
 MonoBehaviour:
@@ -2442,8 +2454,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -337.18, y: -140.19}
-  m_SizeDelta: {x: 65.25, y: 59.61}
+  m_AnchoredPosition: {x: -909, y: -356}
+  m_SizeDelta: {x: 139.26, y: 132.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1393375228
 MonoBehaviour:
@@ -2561,8 +2573,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -12, y: -2}
-  m_SizeDelta: {x: 811.32, y: 423.3}
+  m_AnchoredPosition: {x: -0.014648, y: 0.0018768}
+  m_SizeDelta: {x: 2161.3, y: 959.38}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1454328740
 MonoBehaviour:
@@ -2718,7 +2730,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1552303818}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: da033545387e04144ace49a3cfcd68c6, type: 3}
   m_Name: 
@@ -3018,8 +3030,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -227.23, y: 43.41}
-  m_SizeDelta: {x: 41.51, y: 23.57}
+  m_AnchoredPosition: {x: -572, y: 99}
+  m_SizeDelta: {x: 145.81, y: 73.195}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1693754917
 MonoBehaviour:

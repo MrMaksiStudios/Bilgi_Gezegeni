@@ -28,24 +28,7 @@ public class MobileJoystick : MonoBehaviour, IDragHandler, IPointerUpHandler, IP
 
         Vector2 rawInput = pos / maxRadius;
 
-        if (rawInput == Vector2.zero)
-        {
-            inputVector = Vector2.zero;
-            handle.anchoredPosition = Vector2.zero;
-            return;
-        }
-
-        if (Mathf.Abs(rawInput.x) > Mathf.Abs(rawInput.y))
-        {
-            inputVector = new Vector2(Mathf.Sign(rawInput.x), 0);
-            pos = new Vector2(Mathf.Sign(pos.x) * Mathf.Abs(pos.x), 0);
-        }
-        else
-        {
-            inputVector = new Vector2(0, Mathf.Sign(rawInput.y));
-            pos = new Vector2(0, Mathf.Sign(pos.y) * Mathf.Abs(pos.y));
-        }
-
+        inputVector = rawInput;
         handle.anchoredPosition = pos;
     }
 

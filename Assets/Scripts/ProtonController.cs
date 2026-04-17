@@ -45,6 +45,8 @@ public class ProtonController : MonoBehaviour
 
     void Update()
     {
+        if (PauseManager.IsPaused) return;
+
         HandleCoyoteTime();
 
         dashTimer -= Time.deltaTime;
@@ -112,14 +114,21 @@ public class ProtonController : MonoBehaviour
 
     public void Dash()
     {
-        Vector3 dashDirection = transform.forward;
-        rb.AddForce(dashDirection * dashForce, ForceMode.Impulse);
+        if (PauseManager.IsPaused) return;
 
-        PlayRandomPitchSound(DashSound);
+        if (dashTimer <= 0f)
+        {
+            Vector3 dashDirection = transform.forward;
+            rb.AddForce(dashDirection * dashForce, ForceMode.Impulse);
 
-        TrailRenderer tr = GetComponent<TrailRenderer>();
-        tr.time = 0.8f;
-        Invoke("ResetTrail", 0.2f);
+            PlayRandomPitchSound(DashSound);
+
+            TrailRenderer tr = GetComponent<TrailRenderer>();
+            tr.time = 0.8f;
+            Invoke("ResetTrail", 0.2f);
+
+            dashTimer = dashCooldown;
+        }
     }
 
     void ResetTrail()
@@ -135,12 +144,16 @@ public class ProtonController : MonoBehaviour
 
     public void HandleJump()
     {
+        if (PauseManager.IsPaused) return;
         
-        rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y , rb.velocity.z);
-        rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-        coyoteCounter = 0f;
+        if (isGrounded && coyoteCounter > 0f)
+        {
+            rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y , rb.velocity.z);
+            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            coyoteCounter = 0f;
+            audioSource.PlayOneShot(jumpSound);
+        }
 
-        audioSource.PlayOneShot(jumpSound);
         
     }
 

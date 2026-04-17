@@ -95,4 +95,8 @@ public class SceneLoader : MonoBehaviour
     {
         SceneManager.LoadScene("MetalikBagScene");
     }
+    public void LoadOrbitalRPGScene()
+    {
+        SceneManager.LoadScene("OrbitalRPG");
+    }
 }
