@@ -76,6 +76,6 @@ public class PauseManager : MonoBehaviour
 
         SaveManager.Instance.SaveUI(uiElements);
 
-        SceneManager.LoadScene("Kimya"); 
+        SceneManager.LoadScene("RPGOpening"); 
     }
 }

@@ -9,7 +9,7 @@ public class DragMetallic : MonoBehaviour
     private ElectronRandomMotion seaMotion;
 
     private bool isPlaced = false;
-    bool isDragging;
+    //bool isDragging;
     public Collider2D electronArea;
 
     void Start()
@@ -25,7 +25,7 @@ public class DragMetallic : MonoBehaviour
     {
         if (isPlaced) return;
 
-        isDragging = true;
+        //isDragging = true;
 
         Vector3 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
         offset = transform.position - mousePos;

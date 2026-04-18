@@ -5,18 +5,26 @@ public class SaveManager : MonoBehaviour
 {
     public static SaveManager Instance;
 
+    public bool HasSave()
+    {
+        return PlayerPrefs.HasKey("PlayerX");
+    }
+
     void Awake()
     {
         if (Instance == null)
+        {
             Instance = this;
+        }
         else
+        {
             Destroy(gameObject);
+        }
     }
 
-    // 🎮 SAVE EVERYTHING
+
     public void SaveGame(Transform player,List<ZoneInfo> zones)
     {
-        // Save player position
         PlayerPrefs.SetFloat("PlayerX", player.position.x);
         PlayerPrefs.SetFloat("PlayerY", player.position.y);
         PlayerPrefs.SetFloat("PlayerZ", player.position.z);
@@ -26,22 +34,19 @@ public class SaveManager : MonoBehaviour
             PlayerPrefs.SetInt("Zone_" + i, zones[i].discovered ? 1 : 0);
         }
 
-        // Save audio
         PlayerPrefs.SetFloat("MasterVolume", AudioManager3D.Instance.masterVolume);
         PlayerPrefs.SetFloat("MusicVolume", AudioManager3D.Instance.musicVolume);
         PlayerPrefs.SetFloat("SFXVolume", AudioManager3D.Instance.sfxVolume);
 
         PlayerPrefs.Save();
 
-        Debug.Log("Game Saved");
+        //Debug.Log("Game Saved");
     }
 
-    // 🔁 LOAD EVERYTHING
     public void LoadGame(Transform player, List<ZoneInfo> zones)
     {
         if (!PlayerPrefs.HasKey("PlayerX")) return;
 
-        // Player position
         Vector3 pos = new Vector3(
             PlayerPrefs.GetFloat("PlayerX"),
             PlayerPrefs.GetFloat("PlayerY"),
@@ -50,23 +55,20 @@ public class SaveManager : MonoBehaviour
 
         player.position = pos;
 
-        // Audio
         AudioManager3D.Instance.masterVolume = PlayerPrefs.GetFloat("MasterVolume", 1f);
         AudioManager3D.Instance.musicVolume = PlayerPrefs.GetFloat("MusicVolume", 1f);
         AudioManager3D.Instance.sfxVolume = PlayerPrefs.GetFloat("SFXVolume", 1f);
 
-        // 🔥 Load zones
         for (int i = 0; i < zones.Count; i++)
         {
             int value = PlayerPrefs.GetInt("Zone_" + i, 0);
             zones[i].discovered = (value == 1);
 
-            // restore map icon
             if (zones[i].mapIcon != null)
                 zones[i].mapIcon.SetActive(zones[i].discovered);
         }
 
-        Debug.Log("Game Loaded");
+        //Debug.Log("Game Loaded");
     }
 
     public void SaveUI(List<UIEditable> elements)
@@ -107,6 +109,6 @@ public class SaveManager : MonoBehaviour
         PlayerPrefs.DeleteAll();
         PlayerPrefs.Save();
 
-        Debug.Log("Save Deleted");
+        //Debug.Log("Save Deleted");
     }
 }
