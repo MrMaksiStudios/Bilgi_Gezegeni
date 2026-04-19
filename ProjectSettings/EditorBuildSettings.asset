@@ -12,6 +12,9 @@ EditorBuildSettings:
     path: Assets/Scenes/LoadingScene.unity
     guid: 1b6004ae95fa02a309defc1950860fca
   - enabled: 1
+    path: Assets/Scenes/Orbital Intro.unity
+    guid: 4b4ad62c7558376898a15a10ff72fc79
+  - enabled: 1
     path: Assets/Scenes/OrbitalRPG.unity
     guid: 37ed51b40ee07497ea6d045484b5e9d1
   - enabled: 0

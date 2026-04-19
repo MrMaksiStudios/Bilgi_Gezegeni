@@ -15,7 +15,7 @@ public class MainMenu : MonoBehaviour
         PlayerPrefs.SetInt("ShouldLoad", 0);
         PlayerPrefs.Save();
 
-        LoadingSceneLoader.sceneToLoad = "OrbitalRPG";
+        LoadingSceneLoader.sceneToLoad = "Orbital Intro";
         SceneManager.LoadScene("LoadingScene");
     }
 
@@ -24,7 +24,7 @@ public class MainMenu : MonoBehaviour
         PlayerPrefs.SetInt("ShouldLoad", 1);
         PlayerPrefs.Save();
 
-        LoadingSceneLoader.sceneToLoad = "OrbitalRPG";
+        LoadingSceneLoader.sceneToLoad = "Orbital Intro";
         SceneManager.LoadScene("LoadingScene");
     }
 }
