@@ -143,7 +143,8 @@ public class IntroPart1Controller : MonoBehaviour
                 int index = charInfo.vertexIndex;
                 var vertices = textInfo.meshInfo[charInfo.materialReferenceIndex].vertices;
 
-                float wave = Mathf.Sin(Time.time * 3f + i * 0.5f) * 5f;
+                // Slower, more subtle wave for a cinematic, serious (horror-like) effect
+                float wave = Mathf.Sin(Time.time * 0.5f + i * 0.1f) * 1.5f;
 
                 vertices[index + 0].y += wave;
                 vertices[index + 1].y += wave;

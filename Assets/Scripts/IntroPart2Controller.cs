@@ -41,6 +41,7 @@ public class IntroPart2Controller : MonoBehaviour
     private bool startedLogoFadeIn, startedLogoFadeOut;
     private bool startedBlackFadeIn;
     private bool startedStudioText;
+    private bool startedStudioTextFadeOut;
     private bool loadedScene;
 
 
@@ -54,14 +55,21 @@ public class IntroPart2Controller : MonoBehaviour
     {
         if (lookTarget == null) return;
 
-        Vector3 direction = lookTarget.position - cam.position;
-        //Quaternion targetRotation = Quaternion.LookRotation(direction);
+        // Continuous slow forward movement
+        float speed = 2f;
+        cam.position += cam.forward * speed * Time.deltaTime;
 
-        /*cam.rotation = Quaternion.Slerp(
+        // Rotation disabled as requested
+        /*
+        Vector3 direction = lookTarget.position - cam.position;
+        Quaternion targetRotation = Quaternion.LookRotation(direction);
+
+        cam.rotation = Quaternion.Slerp(
             cam.rotation,
             targetRotation,
             Time.deltaTime * lookSpeed
-        );*/
+        );
+        */
     }
 
     IEnumerator PlayPart2()
@@ -82,8 +90,7 @@ public class IntroPart2Controller : MonoBehaviour
         // Fade out black
         StartCoroutine(FadeOut(3f));
 
-        // Start moving to D orbital
-        StartCoroutine(MoveTo(dPoint, 5f));
+        // Movement starts instantly via LateUpdate
 
         // MAIN LOOP (sync with music)
         while (musicSource.isPlaying)
@@ -139,20 +146,21 @@ public class IntroPart2Controller : MonoBehaviour
                 StartCoroutine(FadeCanvasGroup(logoGroup, 0f, 1f, 2f));
             }
 
-            if (t >= 48f && !startedLogoFadeOut)
+            if (t >= 49f && !startedLogoFadeOut)
             {
                 startedLogoFadeOut = true;
                 StartCoroutine(FadeCanvasGroup(logoGroup, 1f, 0f, 1.5f));
             }
 
-            if (t >= 51f && !startedStudioText)
+            if (t >= 52f && !startedStudioText)
             {
                 startedStudioText = true;
                 StartCoroutine(FadeCanvasGroup(studioTextGroup, 0f, 1f, 2f));
             }
 
-            if (t >= 57f && startedStudioText)
+            if (t >= 57f && !startedStudioTextFadeOut)
             {
+                startedStudioTextFadeOut = true;
                 StartCoroutine(FadeCanvasGroup(studioTextGroup, 1f, 0f, 2f));
             }
 
@@ -196,13 +204,14 @@ public class IntroPart2Controller : MonoBehaviour
         // Teleport while hidden
         SetCameraInstant(target);
 
+        //cam.MoveTowards(target.position, 6.0f); // small nudge to ensure correct position
+
         yield return new WaitForSeconds(0.2f);
 
         // Fade out slowly (cinematic)
         yield return StartCoroutine(FadeOut(2f));
 
-        // SMALL drift instead of big movement (feels better)
-        yield return StartCoroutine(MoveTo(target, 2f));
+        // Movement continues instantly via LateUpdate
     }
 
     IEnumerator MoveCore()
@@ -232,20 +241,13 @@ public class IntroPart2Controller : MonoBehaviour
 
     IEnumerator MoveTo(Transform target, float duration)
     {
-        Vector3 startPos = cam.position;
-        Vector3 endPos = target.position;
+        float speed = 5f; // Very slow forward movement for cinematic effect
+        float elapsed = 0f;
 
-        float t = 0f;
-
-        while (t < 1f)
+        while (elapsed < duration)
         {
-            t += Time.deltaTime / duration;
-
-            // Smooth easing (VERY IMPORTANT)
-            float smoothT = Mathf.SmoothStep(0f, 1f, t);
-
-            cam.position = Vector3.Lerp(startPos, endPos, smoothT);
-
+            cam.position += cam.forward * speed * Time.deltaTime;
+            elapsed += Time.deltaTime;
             yield return null;
         }
     }
