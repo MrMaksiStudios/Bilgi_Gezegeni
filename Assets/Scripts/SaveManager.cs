@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 
 public class SaveManager : MonoBehaviour
 {
@@ -40,6 +41,21 @@ public class SaveManager : MonoBehaviour
 
         PlayerPrefs.Save();
 
+        //saveData.activeMissions = MissionManager.Instance.GetActiveMissionIDs();
+        //saveData.completedMissions = MissionManager.Instance.GetCompletedMissionIDs();
+
+         // --- SAVE MISSIONS ---
+
+        var active = MissionManager.Instance.GetActiveMissionIDs();
+        var completed = MissionManager.Instance.GetCompletedMissionIDs();
+
+        // Convert to string
+        string activeString = string.Join(",", active);
+        string completedString = string.Join(",", completed);
+
+        PlayerPrefs.SetString("ActiveMissions", activeString);
+        PlayerPrefs.SetString("CompletedMissions", completedString);
+
         //Debug.Log("Game Saved");
     }
 
@@ -55,6 +71,8 @@ public class SaveManager : MonoBehaviour
 
         player.position = pos;
 
+        //MissionManager.Instance.LoadMissions(saveData.activeMissions, saveData.completedMissions);
+
         AudioManager3D.Instance.masterVolume = PlayerPrefs.GetFloat("MasterVolume", 1f);
         AudioManager3D.Instance.musicVolume = PlayerPrefs.GetFloat("MusicVolume", 1f);
         AudioManager3D.Instance.sfxVolume = PlayerPrefs.GetFloat("SFXVolume", 1f);
@@ -67,6 +85,23 @@ public class SaveManager : MonoBehaviour
             if (zones[i].mapIcon != null)
                 zones[i].mapIcon.SetActive(zones[i].discovered);
         }
+
+        // --- LOAD MISSIONS ---
+
+        string activeString = PlayerPrefs.GetString("ActiveMissions", "");
+        string completedString = PlayerPrefs.GetString("CompletedMissions", "");
+
+        // Convert back to lists
+        List<string> active = new List<string>();
+        List<string> completed = new List<string>();
+
+        if (!string.IsNullOrEmpty(activeString))
+            active = activeString.Split(',').ToList();
+
+        if (!string.IsNullOrEmpty(completedString))
+            completed = completedString.Split(',').ToList();
+
+        MissionManager.Instance.LoadMissions(active, completed);
 
         //Debug.Log("Game Loaded");
     }

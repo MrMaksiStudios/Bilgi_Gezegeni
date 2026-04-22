@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class ProtonController : MonoBehaviour
 {
@@ -129,6 +130,8 @@ public class ProtonController : MonoBehaviour
 
             dashTimer = dashCooldown;
         }
+
+        //GameEvents.Trigger("End");
     }
 
     void ResetTrail()
@@ -154,7 +157,7 @@ public class ProtonController : MonoBehaviour
             audioSource.PlayOneShot(jumpSound);
         }
 
-        
+        //GameEvents.Trigger("Start");
     }
 
     void ApplyExtraGravity()
@@ -192,4 +195,6 @@ public class ProtonController : MonoBehaviour
             isGrounded = false;
         }
     }
+
+
 }
