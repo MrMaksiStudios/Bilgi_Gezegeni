@@ -75,6 +75,11 @@ public class DialogueManager : MonoBehaviour
 
         typingCoroutine = StartCoroutine(TypeLine(line));
 
+        if (line.givesItem && line.itemToGive != null)
+        {
+            InventoryManager.Instance.AddItem(line.itemToGive);
+        }
+
         currentIndex++;
     }
 

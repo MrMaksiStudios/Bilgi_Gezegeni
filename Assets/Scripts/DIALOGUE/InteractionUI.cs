@@ -9,6 +9,7 @@ public class InteractionUI : MonoBehaviour
     public Button interactButton;
 
     private HasDialogue currentNPC;
+    private Pickupable currentPickup;
 
     void Awake()
     {
@@ -38,6 +39,16 @@ public class InteractionUI : MonoBehaviour
 
     void OnPress()
     {
-        currentNPC?.Interact();
+        if (currentNPC != null)
+            currentNPC.Interact();
+        else if (currentPickup != null)
+            currentPickup.Pickup();
+    }
+
+    public void ShowPickup(Pickupable pickup)
+    {
+        currentPickup = pickup;
+        currentNPC = null;
+        buttonObject.SetActive(true);
     }
 }
