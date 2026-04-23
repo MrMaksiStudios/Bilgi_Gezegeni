@@ -16,7 +16,7 @@ public class ProtonController : MonoBehaviour
 
     [Header("Coyote Time")]
     public float coyoteTime = 0.2f;
-    private float coyoteCounter;
+    [SerializeField] private float coyoteCounter;
 
     [Header("References")]
     public Transform cameraTransform;
@@ -30,14 +30,14 @@ public class ProtonController : MonoBehaviour
     [Header("Dash")]
     public float dashForce = 15f;
     public float dashCooldown = 1f;
-    private float dashTimer;
+    [SerializeField] private float dashTimer;
 
     [Header("Audio Variation")]
     public float minPitch = 0.9f;
     public float maxPitch = 1.1f;
 
     private Rigidbody rb;
-    private bool isGrounded;
+    [SerializeField] private bool isGrounded;
 
     void Start()
     {
