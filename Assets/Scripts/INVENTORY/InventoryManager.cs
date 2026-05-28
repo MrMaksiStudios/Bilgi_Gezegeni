@@ -6,6 +6,7 @@ public class InventoryManager : MonoBehaviour
     public static InventoryManager Instance;
 
     public List<ItemData> items = new();
+    public List<string> collectedPickupableIDs = new(); // Track which pickupables have been collected
 
     public System.Action onInventoryChanged;
 
@@ -14,9 +15,15 @@ public class InventoryManager : MonoBehaviour
         Instance = this;
     }
 
-    public void AddItem(ItemData item)
+    public void AddItem(ItemData item, string pickupableID = "")
     {
         items.Add(item);
+
+        // Track which pickupable was collected
+        if (!string.IsNullOrEmpty(pickupableID))
+        {
+            collectedPickupableIDs.Add(pickupableID);
+        }
 
         PickupUIManager.Instance.ShowPickupText(item.itemName);
 

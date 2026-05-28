@@ -4,16 +4,27 @@ public class MapTeleport : MonoBehaviour
 {
     public Transform player;
     public Transform targetPoint;
+    public MapController mapController;
 
     private Rigidbody rb;
 
     void Start()
     {
         rb = player.GetComponent<Rigidbody>();
+        
+        // Auto-find MapController if not assigned
+        if (mapController == null)
+            mapController = FindObjectOfType<MapController>();
     }
 
     public void Teleport()
     {
+        // Only allow teleport if the expanded map is active
+        if (mapController != null && mapController.state != MapState.Expanded)
+        {
+            return;
+        }
+
         if (rb != null)
         {
             // Stop all motion

@@ -128,7 +128,7 @@ public class IntroPart1Controller : MonoBehaviour
     {
         text.text = message;
 
-        float time = 0f;
+        //float time = 0f;
 
         while (true)
         {

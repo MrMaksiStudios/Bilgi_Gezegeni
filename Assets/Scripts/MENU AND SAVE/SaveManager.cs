@@ -56,6 +56,9 @@ public class SaveManager : MonoBehaviour
         PlayerPrefs.SetString("ActiveMissions", activeString);
         PlayerPrefs.SetString("CompletedMissions", completedString);
 
+        // --- SAVE INVENTORY ---
+        SaveInventory();
+
         //Debug.Log("Game Saved");
     }
 
@@ -103,6 +106,9 @@ public class SaveManager : MonoBehaviour
 
         MissionManager.Instance.LoadMissions(active, completed);
 
+        // --- LOAD INVENTORY ---
+        LoadInventory();
+
         //Debug.Log("Game Loaded");
     }
 
@@ -145,5 +151,87 @@ public class SaveManager : MonoBehaviour
         PlayerPrefs.Save();
 
         //Debug.Log("Save Deleted");
+    }
+
+    public void ClearSpawnPointSave()
+    {
+        PlayerPrefs.DeleteKey("LastSpawnPointX");
+        PlayerPrefs.DeleteKey("LastSpawnPointY");
+        PlayerPrefs.DeleteKey("LastSpawnPointZ");
+        PlayerPrefs.DeleteKey("LastSpawnPointRotX");
+        PlayerPrefs.DeleteKey("LastSpawnPointRotY");
+        PlayerPrefs.DeleteKey("LastSpawnPointRotZ");
+        PlayerPrefs.DeleteKey("LastSpawnPointRotW");
+        PlayerPrefs.Save();
+    }
+
+    void SaveInventory()
+    {
+        var items = InventoryManager.Instance.items;
+        List<string> itemIDs = new List<string>();
+
+        foreach (var item in items)
+        {
+            itemIDs.Add(item.itemID);
+        }
+
+        string inventoryString = string.Join(",", itemIDs);
+        PlayerPrefs.SetString("Inventory", inventoryString);
+        
+        // Save collected pickupables
+        string collectedString = string.Join(",", InventoryManager.Instance.collectedPickupableIDs);
+        PlayerPrefs.SetString("CollectedPickupables", collectedString);
+        
+        PlayerPrefs.Save();
+    }
+
+    void LoadInventory()
+    {
+        if (ItemDatabase.Instance == null)
+        {
+            Debug.LogError("ItemDatabase not found! Cannot load inventory. Make sure ItemDatabase exists in the scene.");
+            return;
+        }
+
+        InventoryManager.Instance.items.Clear();
+        InventoryManager.Instance.collectedPickupableIDs.Clear();
+
+        string inventoryString = PlayerPrefs.GetString("Inventory", "");
+
+        if (string.IsNullOrEmpty(inventoryString))
+            return;
+
+        List<string> itemIDs = new List<string>(inventoryString.Split(','));
+
+        foreach (var itemID in itemIDs)
+        {
+            if (string.IsNullOrEmpty(itemID))
+                continue;
+
+            ItemData item = ItemDatabase.Instance.GetItemByID(itemID);
+            if (item != null)
+            {
+                InventoryManager.Instance.items.Add(item);
+            }
+        }
+
+        // Load collected pickupables
+        string collectedString = PlayerPrefs.GetString("CollectedPickupables", "");
+        if (!string.IsNullOrEmpty(collectedString))
+        {
+            InventoryManager.Instance.collectedPickupableIDs = new List<string>(collectedString.Split(','));
+        }
+
+        // Destroy pickupables that were already collected
+        Pickupable[] allPickupables = FindObjectsOfType<Pickupable>();
+        foreach (var pickupable in allPickupables)
+        {
+            if (InventoryManager.Instance.collectedPickupableIDs.Contains(pickupable.GetPickupableID()))
+            {
+                Destroy(pickupable.gameObject);
+            }
+        }
+
+        InventoryManager.Instance.onInventoryChanged?.Invoke();
     }
 }

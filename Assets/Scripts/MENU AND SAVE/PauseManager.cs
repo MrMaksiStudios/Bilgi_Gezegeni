@@ -73,6 +73,7 @@ public class PauseManager : MonoBehaviour
         SaveManager.Instance.SaveGame(player,zoneManager.zones);
 
         Time.timeScale = 1f;
+        IsPaused = false;
 
         SaveManager.Instance.SaveUI(uiElements);
 

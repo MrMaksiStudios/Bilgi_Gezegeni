@@ -5,6 +5,7 @@ public class ProtonController : MonoBehaviour
 {
     [Header("Movement")]
     public float moveSpeed = 6f;
+    public float movementMultiplier = 1f;
     public float acceleration = 10f;
     public float airControl = 0.5f;
 
@@ -31,17 +32,20 @@ public class ProtonController : MonoBehaviour
     public float dashForce = 15f;
     public float dashCooldown = 1f;
     [SerializeField] private float dashTimer;
+    private float trailResetTimer = 0f;
 
     [Header("Audio Variation")]
     public float minPitch = 0.9f;
     public float maxPitch = 1.1f;
 
     private Rigidbody rb;
+    private TrailRenderer trailRenderer;
     [SerializeField] private bool isGrounded;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        trailRenderer = GetComponent<TrailRenderer>();
     }
 
     void Update()
@@ -51,6 +55,7 @@ public class ProtonController : MonoBehaviour
         HandleCoyoteTime();
 
         dashTimer -= Time.deltaTime;
+        trailResetTimer -= Time.deltaTime;
 
         if (Input.GetKeyDown(KeyCode.LeftShift) && dashTimer <= 0f)
         {
@@ -61,6 +66,44 @@ public class ProtonController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && coyoteCounter > 0f)
         {
             HandleJump();
+        }
+
+        // Reset trail if timer reached
+        if (trailResetTimer <= 0f && trailRenderer != null)
+        {
+            trailRenderer.time = 0.4f;
+            trailResetTimer = -1f; // Only do this once
+        }
+    }
+
+    public void SetSpeed(float speed)
+    {
+        moveSpeed = speed;
+    }
+
+    public void SetMovementMultiplier(float multiplier)
+    {
+        movementMultiplier = Mathf.Clamp01(multiplier);
+    }
+
+    public void ResetMovementMultiplier()
+    {
+        movementMultiplier = 1f;
+    }
+
+    public void ResetControllerState()
+    {
+        // Reset timers and state when loading
+        dashTimer = 0f;
+        coyoteCounter = coyoteTime;
+        isGrounded = true; // Assume grounded after loading
+        trailResetTimer = -1f;
+        movementMultiplier = 1f;
+        
+        if (rb != null)
+        {
+            // Reset vertical velocity but keep horizontal
+            rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
         }
     }
 
@@ -102,7 +145,7 @@ public class ProtonController : MonoBehaviour
 
         float control = isGrounded ? 1f : airControl;
 
-        Vector3 targetVelocity = moveDir * moveSpeed * control;
+        Vector3 targetVelocity = moveDir * moveSpeed * movementMultiplier * control;
         Vector3 velocityChange = targetVelocity - new Vector3(rb.velocity.x, 0, rb.velocity.z);
 
         rb.AddForce(velocityChange * acceleration, ForceMode.Acceleration);
@@ -116,6 +159,7 @@ public class ProtonController : MonoBehaviour
     public void Dash()
     {
         if (PauseManager.IsPaused) return;
+        if (rb == null) rb = GetComponent<Rigidbody>();
 
         if (dashTimer <= 0f)
         {
@@ -124,19 +168,17 @@ public class ProtonController : MonoBehaviour
 
             PlayRandomPitchSound(DashSound);
 
-            TrailRenderer tr = GetComponent<TrailRenderer>();
-            tr.time = 0.8f;
-            Invoke("ResetTrail", 0.2f);
+            if (trailRenderer == null)
+                trailRenderer = GetComponent<TrailRenderer>();
+
+            if (trailRenderer != null)
+            {
+                trailRenderer.time = 0.8f;
+                trailResetTimer = 0.2f;
+            }
 
             dashTimer = dashCooldown;
         }
-
-        //GameEvents.Trigger("End");
-    }
-
-    void ResetTrail()
-    {
-        GetComponent<TrailRenderer>().time = 0.4f;
     }
 
     void PlayRandomPitchSound(AudioClip clip)
@@ -148,16 +190,14 @@ public class ProtonController : MonoBehaviour
     public void HandleJump()
     {
         if (PauseManager.IsPaused) return;
+        if (rb == null) rb = GetComponent<Rigidbody>();
         
-        if (isGrounded && coyoteCounter > 0f)
+        if (coyoteCounter > 0f)
         {
-            rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y , rb.velocity.z);
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             coyoteCounter = 0f;
             audioSource.PlayOneShot(jumpSound);
         }
-
-        //GameEvents.Trigger("Start");
     }
 
     void ApplyExtraGravity()

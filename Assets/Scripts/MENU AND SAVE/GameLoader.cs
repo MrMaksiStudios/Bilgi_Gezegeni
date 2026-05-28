@@ -8,6 +8,7 @@ public class GameLoader : MonoBehaviour
     public ZoneIndicatorManager ZoneIndicatorManager;
     public List<UIEditable> uiElements;
     public PauseManager pauseManager;
+    public ProtonController playerController;
 
     /*void Awake()
     {
@@ -45,6 +46,15 @@ public class GameLoader : MonoBehaviour
             yield return null;
 
             SaveManager.Instance.LoadUI(uiElements);
+            
+            // Wait one more frame for physics to settle before resetting controller
+            yield return new WaitForFixedUpdate();
+            
+            // Reset controller state after loading
+            if (playerController != null)
+            {
+                playerController.ResetControllerState();
+            }
         }
     }
 }
