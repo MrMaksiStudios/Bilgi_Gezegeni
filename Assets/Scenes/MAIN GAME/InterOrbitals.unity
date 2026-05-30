@@ -2333,10 +2333,12 @@ MonoBehaviour:
   normalSpeed: 10
   timerSlider: {fileID: 398382493}
   decisionDuration: 3
-  sOrbitalCourse: {fileID: 585216076}
-  pOrbitalCourse: {fileID: 585216076}
-  dOrbitalCourse: {fileID: 585216076}
-  specialCourse: {fileID: 585216076}
+  s4OrbitalCourse: {fileID: 585216076}
+  p3OrbitalCourse: {fileID: 585216076}
+  s3OrbitalCourse: {fileID: 585216076}
+  p2OrbitalCourse: {fileID: 585216076}
+  s2OrbitalCourse: {fileID: 585216076}
+  s1OrbitalCourse: {fileID: 585216076}
 --- !u!1 &1236315776
 GameObject:
   m_ObjectHideFlags: 0

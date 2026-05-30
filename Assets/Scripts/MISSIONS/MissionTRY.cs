@@ -43,7 +43,7 @@ public class MissionTRY : MonoBehaviour
         {
             GameEvents.Trigger("bitir4");
         }
-        if (Input.GetKeyDown(KeyCode.E))
+        /*if (Input.GetKeyDown(KeyCode.E))
         {
             //SaveManager.Instance.SaveGame(player,zoneManager.zones);
             player.position = destinationTransform.position;
@@ -53,6 +53,6 @@ public class MissionTRY : MonoBehaviour
             WarpData.currentWarp = WarpType.To_P_Orbital;
             WarpController.Instance.StartWarp("InterOrbitals");
             //player.position = TravelData.targetPosition;
-        }
+        }*/
     }
 }

@@ -1,9 +1,9 @@
 public enum WarpType
 {
-    To_S_Orbital,
-    To_P_Orbital,
-    To_D_Orbital,
-    To_F_Orbital,
-    Special_Event,
-    Final_Warp
+    To_4S_Orbital,
+    To_3P_Orbital,
+    To_3S_Orbital,
+    To_2P_Orbital,
+    To_2S_Orbital,
+    To_1S_Orbital,
 }

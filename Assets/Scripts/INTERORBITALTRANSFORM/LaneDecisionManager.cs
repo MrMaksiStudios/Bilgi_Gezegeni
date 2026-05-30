@@ -17,10 +17,12 @@ public class LaneDecisionManager : MonoBehaviour
     public float decisionDuration = 3f;
 
     [Header("Obstacle Courses")]
-    public GameObject sOrbitalCourse;
-    public GameObject pOrbitalCourse;
-    public GameObject dOrbitalCourse;
-    public GameObject specialCourse;
+    public GameObject s4OrbitalCourse;
+    public GameObject p3OrbitalCourse;
+    public GameObject s3OrbitalCourse;
+    public GameObject p2OrbitalCourse;
+    public GameObject s2OrbitalCourse;
+    public GameObject s1OrbitalCourse;
 
     private GameObject currentCourse;
 
@@ -70,30 +72,37 @@ public class LaneDecisionManager : MonoBehaviour
     {
         switch (WarpData.currentWarp)
         {
-            case WarpType.To_S_Orbital:
-                currentCourse = Instantiate(sOrbitalCourse);
+            case WarpType.To_4S_Orbital:
+                currentCourse = Instantiate(s4OrbitalCourse);
                 currentCourse.SetActive(true);
                 break;
 
-            case WarpType.To_P_Orbital:
-                currentCourse = Instantiate(pOrbitalCourse);
+            case WarpType.To_3P_Orbital:
+                currentCourse = Instantiate(p3OrbitalCourse);
                 currentCourse.SetActive(true);
                 break;
 
-            case WarpType.To_D_Orbital:
-                currentCourse = Instantiate(dOrbitalCourse);
+            case WarpType.To_3S_Orbital:
+                currentCourse = Instantiate(s3OrbitalCourse);
                 currentCourse.SetActive(true);
                 break;
 
-            case WarpType.Special_Event:
-                currentCourse = Instantiate(specialCourse);
+            case WarpType.To_2P_Orbital:
+                currentCourse = Instantiate(p2OrbitalCourse);
                 currentCourse.SetActive(true);
                 break;
-            
+
+            case WarpType.To_2S_Orbital:
+                currentCourse = Instantiate(s2OrbitalCourse);
+                currentCourse.SetActive(true);
+                break;
+
+            case WarpType.To_1S_Orbital:
+                currentCourse = Instantiate(s1OrbitalCourse);
+                currentCourse.SetActive(true);
+                break;
         }
     }
-
-    // 🔥 CALLED BY TRIGGER (ONLY ONCE)
     public void ReachDecision(DecisionTrigger trigger)
     {
         if (inDecision) return;
@@ -108,8 +117,6 @@ public class LaneDecisionManager : MonoBehaviour
         if (timerSlider != null)
             timerSlider.gameObject.SetActive(true);
     }
-
-    // 🔥 EVALUATION (ONLY HERE)
     void EvaluateDecision()
     {
         inDecision = false;

@@ -19,7 +19,7 @@ public class MissionWarpTriggerRoute
 
     [Header("Warp Settings")]
     [Tooltip("Warp type to store when this route fires.")]
-    public WarpType warpType = WarpType.To_P_Orbital;
+    public WarpType warpType;
 
     [Tooltip("Scene name to load. Leave empty only if using warp back.")]
     public string targetSceneName = "InterOrbitals";
